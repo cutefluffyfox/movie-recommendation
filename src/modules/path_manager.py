@@ -1,8 +1,10 @@
 import os
 import ast
+import json
+import joblib
 import numpy as np
 import pandas as pd
-import json
+from scipy import sparse
 
 
 class Loader:
@@ -41,15 +43,20 @@ class SaveData(Saver):
         # make directory if not exist
         os.makedirs(self.dir, exist_ok=True)
 
-    def save_dataframe(self, csv: pd.DataFrame, file_name: str) -> str:
+    def save_dataframe(self, csv: pd.DataFrame or pd.Series, file_name: str, index: bool = True) -> str:
         file_path = os.path.join(self.dir, file_name)
-        csv.to_csv(file_path)
+        csv.to_csv(file_path, index=index)
         return file_path
 
     def save_json(self, dict_data: dict, file_name: str) -> str:
         file_path = os.path.join(self.dir, file_name)
         with open(file_path, 'w') as file:
             json.dump(dict_data, file, indent=4)
+        return file_path
+
+    def save_sparse(self, sparse_data: sparse.csr_matrix, file_name: str) -> str:
+        file_path = os.path.join(self.dir, file_name)
+        sparse.save_npz(file_path, sparse_data)
         return file_path
 
 
@@ -68,7 +75,7 @@ class LoadData(Loader):
 
     def read_dataframe(
             self, file_name: str, apply_ast_to: str = None, ignore_header: bool = False,
-            names: list[str] = None, sep: str = None, encoding: str = None, index_col: int = None) -> pd.DataFrame:
+            names: list[str] = None, sep: str = None, encoding: str = None, index_col: int = None) -> pd.DataFrame or pd.Series:
 
         # define key parameters to read dataframe
         kwargs = dict()
@@ -98,6 +105,9 @@ class LoadData(Loader):
             dict_data = json.load(file)
         return dict_data
 
+    def read_sparse(self, file_name: str) -> sparse.csr_matrix:
+        return sparse.load_npz(os.path.join(self.dir, file_name))
+
 
 class SaveModel(Loader):
     """
@@ -122,6 +132,11 @@ class SaveModel(Loader):
                 np.save(file, weights)
         return file_path
 
+    def save_sklearn(self, model, file_name: str) -> str:
+        file_path = os.path.join(self.dir, file_name)
+        joblib.dump(model, file_path)
+        return file_path
+
 
 class LoadModel(Loader):
     """
@@ -135,10 +150,13 @@ class LoadModel(Loader):
         # combine parts into one path
         self.dir = os.path.join(os.getcwd(), dir_type, model_type, *extras)
 
-    def read_numpy(self, file_name, n_items: int) -> list[np.ndarray]:
+    def read_numpy(self, file_name: str, n_items: int) -> list[np.ndarray]:
         with open(os.path.join(self.dir, file_name), 'rb') as file:
             items = [np.load(file) for _ in range(n_items)]
         return items
+
+    def read_sklearn(self, file_name: str):
+        return joblib.load(os.path.join(self.dir, file_name))
 
 
 class GradioReaders:

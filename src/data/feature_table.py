@@ -1,5 +1,6 @@
+import numpy as np
 import pandas as pd
-import gradio as gr
+from scipy import sparse
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
@@ -19,7 +20,7 @@ categorical_preprocessing = Pipeline(steps=[
 ])
 
 
-def preprocess_data(X: pd.DataFrame, y: pd.DataFrame, train_size: float, seed: int) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def preprocess_data(X: pd.DataFrame, y: pd.DataFrame, train_size: float, seed: int) -> tuple[sparse.csr_matrix, pd.Series, sparse.csr_matrix, pd.Series]:
     # get columns
     ignore_columns = [
         'unknown', 'action', 'adventure', 'animation', 'childrens', 'comedy',
@@ -78,11 +79,11 @@ def split_data(dataset: str, train_size: float, seed: int) -> str:
     x_train, y_train, x_test, y_test = preprocess_data(x, y, train_size=train_size, seed=seed)
 
     # save train
-    saver.save_dataframe(x_train, 'X_train.csv')
-    saver.save_dataframe(y_train, 'y_train.csv')
+    saver.save_sparse(x_train, 'X_train.npz')
+    saver.save_dataframe(y_train, 'y_train.csv', index=False)
 
     # save test
-    saver.save_dataframe(x_test, 'X_test.csv')
-    saver.save_dataframe(y_test, 'y_test.csv')
+    saver.save_sparse(x_test, 'X_test.npz')
+    saver.save_dataframe(y_test, 'y_test.csv', index=False)
 
     return 'Successfully split and preprocessed data'
