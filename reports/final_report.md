@@ -11,6 +11,18 @@ for recommendation system.
 This report will also have in-depth information how to run this project, reproduce our 
 results and train new models (even on different datasets with nice web interface!).
 
+# Navigation
+* [Data exploration](#data-exploration)
+  * [User distributions](#user-distributions)
+  * [Films distributions](#films-distributions)
+  * [Ratings distributions](#ratings-distributions)
+  * [Mixed distributions](#combined-statistics)
+* [Matrix factorization](#matrix-factorization)
+* [Classical ML on features](#classical-ml-on-features)
+* [Metrics](#metrics)
+* [Credits](#credits)
+
+
 # Data exploration
 
 As a first step in each problem, we should understand dataset in-depth. The dataset we are using is
@@ -154,5 +166,5 @@ calculate, so that's also was the reason.
 Created by Polina Zelenskaya\
 Innopolis University DS21-03
 
-Github: [@cutefluffyfox](https://github.com/cutefluffyfox)\
+Github: github.com/cutefluffyfox\
 Email: p.zelenskaya@innopolis.university
