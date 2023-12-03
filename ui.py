@@ -26,7 +26,6 @@ def update_ridge_checkpoint_dropdown(*args, **kwargs):
     return checkpoint_choices
 
 
-
 # make tabs
 with gr.Blocks(theme=gr.themes.Default()) as ui:
     gr.Markdown('Movie recommendation models - Made by @cutefluffyfox')
@@ -50,7 +49,6 @@ with gr.Blocks(theme=gr.themes.Default()) as ui:
         factorize_btn.click(rank_matrix.make_rank_matrix, inputs=[raw_dataset], outputs=split_factor_output)
 
         update_raw_btn.click(update_raw_dropdown, inputs=[], outputs=[raw_dataset])
-
 
         gr.Markdown('Train & Evaluate model')
         with gr.Row():
@@ -78,8 +76,8 @@ with gr.Blocks(theme=gr.themes.Default()) as ui:
             with gr.Column():
                 raw_dataset_feature = gr.Dropdown(GradioReaders.read_dir_type('raw'), label="Chose dataset", info="Chose what dataset to preprocess", interactive=True)
                 update_raw_btn_feature = gr.Button('Refresh dataset list')
-                train_size_feature = gr.Slider(0, 1, value=0.8, label='Train size', info='Ratio to train/test dataset')
-                seed_feature = gr.Number(value=42, label='Set seed (nothing - random seed)', info='Seed to reproduce results, do not enter for random seed', precision=0)
+                train_size_feature = gr.Slider(0, 1, value=0.8, label='Train size (use the default split to only evaluate)', info='Ratio to train/test dataset')
+                seed_feature = gr.Number(value=42, label='Set seed (nothing - random seed, use the default seed to only evaluate)', info='Seed to reproduce results, do not enter for random seed', precision=0)
             with gr.Column():
                 split_feature_output = gr.Text(label='Information box')
 

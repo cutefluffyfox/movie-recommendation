@@ -39,7 +39,7 @@ def train_and_evaluate(dataset: str, model_type: str, lr: float, reg: float, do_
     # read dataset
     rank_matrix = rank_loader.read_dataframe('rank_matrix.csv', index_col=0, sep=',').to_numpy()
     metadata = rank_loader.read_json('metadata.json')
-    x_test = split_loader.read_dataframe('x_test.csv', index_col=0, sep=',').to_numpy()
+    x_test = split_loader.read_dataframe('X_test.csv', index_col=0, sep=',').to_numpy()
     y_test = split_loader.read_dataframe('y_test.csv', index_col=0, sep=',').to_numpy()
 
     # define model
