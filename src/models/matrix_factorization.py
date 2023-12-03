@@ -1,7 +1,7 @@
 import numpy as np
 from gradio import Progress
 from src.modules.path_manager import LoadData, LoadModel, SaveModel
-from src.modules.metrics import evaluate
+from benchmark.evaluate import evaluate
 
 
 class MatrixFactorization:

@@ -1,9 +1,8 @@
 import numpy as np
-import pandas as pd
 from scipy import sparse
 from gradio import Progress
 from sklearn.linear_model import BayesianRidge
-from src.modules.metrics import evaluate
+from benchmark.evaluate import evaluate
 from src.modules.path_manager import LoadData, LoadModel, SaveModel
 
 
